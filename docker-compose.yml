@@ -1,0 +1,30 @@
+svr1:
+  image: manicmonkey/raspbian-wildfly
+  volumes:
+    - /home/pi/projects/docker-load-balancing/war:/opt/wildfly/standalone/deployments
+  environment:
+    - SERVER_NUMBER=1
+
+svr2:
+  image: manicmonkey/raspbian-wildfly
+  volumes:
+    - /home/pi/projects/docker-load-balancing/war:/opt/wildfly/standalone/deployments
+  environment:
+    - SERVER_NUMBER=2
+
+svr3:
+  image: manicmonkey/raspbian-wildfly
+  volumes:
+    - /home/pi/projects/docker-load-balancing/war:/opt/wildfly/standalone/deployments
+  environment:
+    - SERVER_NUMBER=3
+
+lb:
+#  image: manicmonkey/raspbian-wildfly-lb
+  build: .
+  links:
+    - svr1
+    - svr2
+    - svr3
+  ports:
+    - "8080:8080"

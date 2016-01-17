@@ -1,0 +1,11 @@
+embed-server
+/interface=public:write-attribute(name=inet-address)
+/interface=public:write-attribute(name=any-address,value=true)
+/socket-binding-group=standard-sockets/remote-destination-outbound-socket-binding=http-rproxy1:add(host=svr1,port=8080)
+/socket-binding-group=standard-sockets/remote-destination-outbound-socket-binding=http-rproxy2:add(host=svr2,port=8080)
+/socket-binding-group=standard-sockets/remote-destination-outbound-socket-binding=http-rproxy3:add(host=svr3,port=8080)
+/subsystem=undertow/configuration=handler/reverse-proxy=my-handler:add()
+/subsystem=undertow/configuration=handler/reverse-proxy=my-handler/host=http\:\/\/srv1/:add(outbound-socket-binding=http-rproxy1)
+/subsystem=undertow/configuration=handler/reverse-proxy=my-handler/host=http\:\/\/srv2/:add(outbound-socket-binding=http-rproxy2)
+/subsystem=undertow/configuration=handler/reverse-proxy=my-handler/host=http\:\/\/srv3/:add(outbound-socket-binding=http-rproxy3)
+/subsystem=undertow/server=default-server/host=default-host/location=\/app:add(handler=my-handler)
